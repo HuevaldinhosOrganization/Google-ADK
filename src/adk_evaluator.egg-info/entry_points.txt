@@ -1,0 +1,2 @@
+[console_scripts]
+adk-evaluator = adk_evaluator.cli:main

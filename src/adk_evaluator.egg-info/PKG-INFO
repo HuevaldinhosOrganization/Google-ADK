@@ -1,0 +1,61 @@
+Metadata-Version: 2.4
+Name: adk-evaluator
+Version: 0.1.0
+Summary: Base Python project for evaluating ground truth and trajectory solutions.
+Author: Personal ADK Learner
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: black>=24.0; extra == "dev"
+Requires-Dist: isort>=5.0; extra == "dev"
+Requires-Dist: mypy>=1.8; extra == "dev"
+
+# ADK Evaluator
+
+Plantilla base para aprender a probar soluciones desarrolladas con Google ADK y evaluar ground truths y trayectorias. El proyecto está estructurado para ser escalable, modular y sencillo de extender.
+
+## Características
+
+- Modelos de dominio para ground truths, trayectorias y predicciones
+- Evaluación de métricas de ruta, cobertura y coincidencia de etiquetas
+- Capa de entrada/salida para JSON de datos de trayectorias
+- Servicio de orquestación de evaluación con CLI simple
+- Pruebas automatizadas con `pytest`
+
+## Instalación
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -U pip
+python -m pip install -e .[dev]
+```
+
+## Uso
+
+Ejecuta la evaluación con los archivos de ejemplo:
+
+```powershell
+adk-evaluator --ground-truth data/sample_ground_truth.json --predictions data/sample_predictions.json --output results.json
+```
+
+## Estructura
+
+- `src/adk_evaluator/`: código fuente principal
+- `tests/`: pruebas unitarias
+- `data/`: ejemplos de datos de ground truth y predicciones
+- `docs/`: guía de arquitectura y pruebas
+
+## Desarrollo
+
+Ejecuta las pruebas:
+
+```powershell
+pytest
+```
+
+## Cómo ampliar
+
+Para agregar soporte real de Google ADK, incorpora un adaptador en `src/adk_evaluator/adapters/` y crea fixtures de datos en `tests/fixtures/`.

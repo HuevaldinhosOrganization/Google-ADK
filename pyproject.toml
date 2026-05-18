@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adk-evaluator"
+version = "0.1.0"
+description = "Base Python project for evaluating ground truth and trajectory solutions."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Personal ADK Learner"}]
+dependencies = []
+
+[project.scripts]
+adk-evaluator = "adk_evaluator.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "black>=24.0", "isort>=5.0", "mypy>=1.8"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "--strict-markers"
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"

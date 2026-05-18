@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.venv/
+.env
+*.py[cod]
+*.sqlite3
+results.json
+
+.vscode/
