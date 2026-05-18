@@ -12,6 +12,8 @@
 - `tests/test_evaluation.py`: comprueba los cálculos de métricas.
 - `tests/test_io.py`: verifica la carga y el guardado de JSON.
 - `tests/test_memory.py`: valida el comportamiento de la memoria del agente, cómo guarda el estado y cómo crea snapshots inmutables.
+- `tests/test_adk_evaluation.py`: valida métricas estilo ADK y el cálculo de scores adicionales.
+- `tests/test_adk_adapter.py`: valida la carga de datos en formato ADK.
 
 ## Ejecución
 

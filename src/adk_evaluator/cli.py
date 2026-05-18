@@ -31,17 +31,35 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=1.0,
         help="Maximum distance for coverage between predicted and truth points.",
     )
+    parser.add_argument(
+        "--report-type",
+        choices=["standard", "adk"],
+        default="standard",
+        help="Choose the evaluation report type: standard or adk.",
+    )
+    parser.add_argument(
+        "--input-format",
+        choices=["standard", "adk"],
+        default="standard",
+        help="Choose the input data format: standard JSON or ADK JSON.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    service = EvaluationService()
+    service = EvaluationService(
+        report_type=args.report_type,
+        coverage_tolerance=args.coverage_tolerance,
+        input_format=args.input_format,
+    )
     results = service.evaluate_files(
         ground_truth_path=args.ground_truth,
         prediction_path=args.predictions,
         output_path=args.output,
         coverage_tolerance=args.coverage_tolerance,
+        report_type=args.report_type,
+        input_format=args.input_format,
     )
 
     print(f"Evaluated {len(results)} matched trajectories.")
