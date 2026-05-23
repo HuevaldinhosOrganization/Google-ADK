@@ -2,6 +2,13 @@ from adk_evaluator.models import Trajectory, TrajectoryPoint
 
 
 def test_trajectory_serialization():
+    """Test Trajectory serialization and deserialization.
+    
+    Verifies:
+    - to_dict() converts Trajectory with points to dictionary format
+    - from_dict() reconstructs Trajectory from dictionary
+    - Roundtrip preserves id, label, point_count, and trajectory length
+    """
     trajectory = Trajectory(
         id="route-1",
         label="inspection",

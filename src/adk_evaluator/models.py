@@ -13,6 +13,11 @@ class TrajectoryPoint:
     t: Optional[float] = None
 
     def to_dict(self) -> PointType:
+        """Convert trajectory point to dictionary.
+        
+        Returns:
+            Dictionary with x, y coordinates and optional time t.
+        """
         payload: PointType = {"x": self.x, "y": self.y}
         if self.t is not None:
             payload["t"] = self.t
@@ -20,6 +25,14 @@ class TrajectoryPoint:
 
     @staticmethod
     def from_dict(payload: PointType) -> "TrajectoryPoint":
+        """Create a TrajectoryPoint from a dictionary.
+        
+        Args:
+            payload: Dictionary containing x, y, and optional t keys.
+        
+        Returns:
+            TrajectoryPoint instance.
+        """
         return TrajectoryPoint(
             x=float(payload.get("x", 0.0)),
             y=float(payload.get("y", 0.0)),
@@ -27,6 +40,14 @@ class TrajectoryPoint:
         )
 
     def distance_to(self, other: "TrajectoryPoint") -> float:
+        """Calculate Euclidean distance to another point.
+        
+        Args:
+            other: Another TrajectoryPoint.
+        
+        Returns:
+            Euclidean distance between the two points.
+        """
         return math.hypot(self.x - other.x, self.y - other.y)
 
 
@@ -38,6 +59,14 @@ class Trajectory:
 
     @classmethod
     def from_dict(cls, payload: Dict[str, Any]) -> "Trajectory":
+        """Create a Trajectory from a dictionary.
+        
+        Args:
+            payload: Dictionary with id, label, and points list.
+        
+        Returns:
+            Trajectory instance.
+        """
         raw_points = payload.get("points", [])
         points = tuple(TrajectoryPoint.from_dict(point) for point in raw_points)
         return cls(
@@ -47,6 +76,11 @@ class Trajectory:
         )
 
     def to_dict(self) -> Dict[str, Any]:
+        """Convert trajectory to dictionary.
+        
+        Returns:
+            Dictionary with id, label, and points list.
+        """
         return {
             "id": self.id,
             "label": self.label,
@@ -55,10 +89,20 @@ class Trajectory:
 
     @property
     def point_count(self) -> int:
+        """Get the number of points in the trajectory.
+        
+        Returns:
+            Number of trajectory points.
+        """
         return len(self.points)
 
     @property
     def length(self) -> float:
+        """Calculate total trajectory length as sum of distances between consecutive points.
+        
+        Returns:
+            Total distance traveled along the trajectory.
+        """
         if self.point_count < 2:
             return 0.0
         return sum(
@@ -87,6 +131,11 @@ class EvaluationResult:
     matched_truth_id: Optional[str]
 
     def to_dict(self) -> Dict[str, Any]:
+        """Convert evaluation result to dictionary.
+        
+        Returns:
+            Dictionary with all evaluation metrics.
+        """
         payload = {
             "trajectory_id": self.trajectory_id,
             "matched_truth_id": self.matched_truth_id,

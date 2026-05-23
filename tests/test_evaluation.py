@@ -3,6 +3,15 @@ from adk_evaluator.models import GroundTruth, Prediction, TrajectoryPoint
 
 
 def test_trajectory_evaluator_reports_metrics():
+    """Test that TrajectoryEvaluator correctly computes trajectory evaluation metrics.
+    
+    Verifies:
+    - trajectory_id matches the prediction ID
+    - matched_truth_id matches the matched ground truth ID
+    - label_match correctly identifies matching labels
+    - path_error is positive for differing trajectories
+    - coverage equals 1.0 when all truth points are within tolerance
+    """
     truth = GroundTruth(
         id="route-1",
         label="delivery",

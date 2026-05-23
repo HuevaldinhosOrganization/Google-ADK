@@ -6,6 +6,14 @@ from adk_evaluator.service import EvaluationService
 
 
 def test_adk_adapter_loads_adk_records(tmp_path: Path):
+    """Test that ADK adapter correctly loads and parses ADK format JSON.
+    
+    Verifies:
+    - Ground truths are loaded from ADK records with nested location fields
+    - Predictions are loaded from ADK records
+    - Flexible field names (trace_id, type, steps) are handled
+    - Point extraction works with nested location objects
+    """
     ground_truth_file = tmp_path / "adk_ground_truth.json"
     prediction_file = tmp_path / "adk_predictions.json"
 
@@ -58,6 +66,13 @@ def test_adk_adapter_loads_adk_records(tmp_path: Path):
 
 
 def test_adk_service_uses_adk_input_format(tmp_path: Path):
+    """Test that EvaluationService correctly evaluates using ADK input format and report type.
+    
+    Verifies:
+    - ADK format input loading with flexible field names (id, label, steps)
+    - ADK report type generates results with ADK-specific metrics
+    - Precision, recall, F1, and adk_score are computed correctly
+    """
     ground_truth_file = tmp_path / "adk_ground_truth.json"
     prediction_file = tmp_path / "adk_predictions.json"
     output_file = tmp_path / "adk_results.json"

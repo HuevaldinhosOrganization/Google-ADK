@@ -8,8 +8,18 @@ from .models import EvaluationResult, GroundTruth, Prediction, TrajectoryPoint
 
 
 class Evaluator(ABC):
+    """Abstract base class for trajectory evaluation."""
     @abstractmethod
     def evaluate(self, truth: GroundTruth, prediction: Prediction) -> EvaluationResult:
+        """Evaluate a prediction against ground truth.
+        
+        Args:
+            truth: Ground truth trajectory.
+            prediction: Predicted trajectory.
+        
+        Returns:
+            Evaluation result with metrics.
+        """
         raise NotImplementedError
 
 
@@ -19,10 +29,27 @@ class TrajectoryEvaluator(Evaluator):
         coverage_tolerance: float = 1.0,
         match_by_id_first: bool = True,
     ) -> None:
+        """Initialize TrajectoryEvaluator with evaluation parameters.
+        
+        Args:
+            coverage_tolerance: Maximum distance for considering a point covered.
+            match_by_id_first: If True, match trajectories by ID before distance-based matching.
+        """
         self.coverage_tolerance = coverage_tolerance
         self.match_by_id_first = match_by_id_first
 
     def evaluate(self, truth: GroundTruth, prediction: Prediction) -> EvaluationResult:
+        """Evaluate a prediction against ground truth trajectory.
+        
+        Computes path error, coverage, duration error, and label match metrics.
+        
+        Args:
+            truth: Ground truth trajectory.
+            prediction: Predicted trajectory.
+        
+        Returns:
+            EvaluationResult containing computed metrics.
+        """
         path_error = self._average_point_distance(truth.points, prediction.points)
         coverage = self._coverage(truth.points, prediction.points)
         duration_error = self._duration_error(truth.points, prediction.points)
@@ -39,6 +66,17 @@ class TrajectoryEvaluator(Evaluator):
     def evaluate_batch(
         self, truths: Iterable[GroundTruth], predictions: Iterable[Prediction]
     ) -> List[EvaluationResult]:
+        """Evaluate multiple predictions against ground truth trajectories.
+        
+        Matches predictions to ground truths and evaluates each match.
+        
+        Args:
+            truths: Iterable of ground truth trajectories.
+            predictions: Iterable of predicted trajectories.
+        
+        Returns:
+            List of EvaluationResult for each matched pair.
+        """
         truth_list = list(truths)
         truth_index = {truth.id: truth for truth in truth_list}
         results: List[EvaluationResult] = []
@@ -57,6 +95,19 @@ class TrajectoryEvaluator(Evaluator):
         truth_list: Sequence[GroundTruth],
         truth_index: dict[str, GroundTruth],
     ) -> Optional[GroundTruth]:
+        """Match a prediction to the best ground truth trajectory.
+        
+        First tries to match by ID if match_by_id_first is True,
+        then falls back to finding the closest ground truth by average point distance.
+        
+        Args:
+            prediction: Predicted trajectory to match.
+            truth_list: List of ground truth trajectories.
+            truth_index: Dictionary mapping trajectory IDs to ground truths.
+        
+        Returns:
+            Matched ground truth or None if no truths available.
+        """
         if self.match_by_id_first and prediction.id in truth_index:
             return truth_index[prediction.id]
 
@@ -74,6 +125,18 @@ class TrajectoryEvaluator(Evaluator):
         truth_points: tuple[TrajectoryPoint, ...],
         prediction_points: tuple[TrajectoryPoint, ...],
     ) -> float:
+        """Calculate average Euclidean distance between corresponding points.
+        
+        Compares points up to the minimum length of both trajectories.
+        Returns infinity if one trajectory is empty and the other isn't.
+        
+        Args:
+            truth_points: Ground truth trajectory points.
+            prediction_points: Predicted trajectory points.
+        
+        Returns:
+            Average distance between corresponding points.
+        """
         if not truth_points and not prediction_points:
             return 0.0
         if not truth_points or not prediction_points:
@@ -91,6 +154,18 @@ class TrajectoryEvaluator(Evaluator):
         truth_points: tuple[TrajectoryPoint, ...],
         prediction_points: tuple[TrajectoryPoint, ...],
     ) -> float:
+        """Calculate fraction of ground truth points covered by predictions.
+        
+        A truth point is considered covered if any prediction point
+        is within coverage_tolerance distance.
+        
+        Args:
+            truth_points: Ground truth trajectory points.
+            prediction_points: Predicted trajectory points.
+        
+        Returns:
+            Coverage ratio (0.0 to 1.0).
+        """
         if not truth_points or not prediction_points:
             return 0.0
 
@@ -109,6 +184,17 @@ class TrajectoryEvaluator(Evaluator):
         truth_points: tuple[TrajectoryPoint, ...],
         prediction_points: tuple[TrajectoryPoint, ...],
     ) -> Optional[float]:
+        """Calculate absolute difference in trajectory duration (end time - start time).
+        
+        Only considers points with time values. Returns None if insufficient time data.
+        
+        Args:
+            truth_points: Ground truth trajectory points with time values.
+            prediction_points: Predicted trajectory points with time values.
+        
+        Returns:
+            Absolute duration error in seconds, or None if times unavailable.
+        """
         if not truth_points or not prediction_points:
             return None
 

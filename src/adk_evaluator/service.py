@@ -10,6 +10,7 @@ from .models import GroundTruth, Prediction, EvaluationResult
 
 
 class EvaluationService:
+    """Service for evaluating trajectory predictions."""
     def __init__(
         self,
         evaluator: TrajectoryEvaluator | None = None,
@@ -17,12 +18,25 @@ class EvaluationService:
         coverage_tolerance: float = 1.0,
         input_format: str = "standard",
     ) -> None:
+        """Initialize EvaluationService with configuration.
+        
+        Args:
+            evaluator: Custom evaluator instance. If None, one is created based on report_type.
+            report_type: Type of report ('standard' or 'adk').
+            coverage_tolerance: Distance threshold for coverage calculations.
+            input_format: Input data format ('standard' or 'adk').
+        """
         self.report_type = report_type
         self.coverage_tolerance = coverage_tolerance
         self.input_format = input_format
         self.evaluator = evaluator or self._build_evaluator()
 
     def _build_evaluator(self) -> TrajectoryEvaluator:
+        """Build evaluator instance based on report type.
+        
+        Returns:
+            AdkTrajectoryEvaluator for 'adk' report type, TrajectoryEvaluator otherwise.
+        """
         if self.report_type == "adk":
             return AdkTrajectoryEvaluator(coverage_tolerance=self.coverage_tolerance)
         return TrajectoryEvaluator(coverage_tolerance=self.coverage_tolerance)
@@ -30,6 +44,15 @@ class EvaluationService:
     def evaluate(
         self, truths: Iterable[GroundTruth], predictions: Iterable[Prediction]
     ) -> List[EvaluationResult]:
+        """Evaluate predictions against ground truths.
+        
+        Args:
+            truths: Iterable of ground truth trajectories.
+            predictions: Iterable of predicted trajectories.
+        
+        Returns:
+            List of evaluation results.
+        """
         return self.evaluator.evaluate_batch(truths, predictions)
 
     def evaluate_files(
@@ -41,6 +64,19 @@ class EvaluationService:
         report_type: str = "standard",
         input_format: str = "standard",
     ) -> List[EvaluationResult]:
+        """Evaluate predictions from files and write results to output file.
+        
+        Args:
+            ground_truth_path: Path to ground truth JSON file.
+            prediction_path: Path to predictions JSON file.
+            output_path: Path to write results JSON to.
+            coverage_tolerance: Distance threshold for coverage calculations.
+            report_type: Type of report ('standard' or 'adk').
+            input_format: Input data format ('standard' or 'adk').
+        
+        Returns:
+            List of evaluation results.
+        """
         self.report_type = report_type
         self.coverage_tolerance = coverage_tolerance
         self.input_format = input_format

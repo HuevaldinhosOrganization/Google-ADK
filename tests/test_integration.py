@@ -4,6 +4,15 @@ from adk_evaluator.service import EvaluationService
 
 
 def test_integration_evaluation_with_complex_dataset(tmp_path: Path):
+    """Test end-to-end evaluation pipeline with complex dataset.
+    
+    Verifies:
+    - Complex trajectories with multiple points are loaded correctly
+    - EvaluationService processes ground truths and predictions
+    - Results are written to output file
+    - All expected metrics are present in results (trajectory_id, coverage, matched_truth_id, label_match, duration_error)
+    - Some trajectories match labels and some have duration errors
+    """
     source_ground_truth = Path("data/sample_ground_truth_complex.json")
     source_predictions = Path("data/sample_predictions_complex.json")
     output_file = tmp_path / "evaluation_results.json"

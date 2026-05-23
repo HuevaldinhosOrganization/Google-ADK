@@ -6,6 +6,15 @@ from adk_evaluator.models import GroundTruth, Prediction
 
 
 def test_json_io_roundtrip(tmp_path: Path):
+    """Test JSON I/O functions for saving and loading trajectory data.
+    
+    Verifies:
+    - save_json creates parent directories and writes JSON correctly
+    - load_ground_truths deserializes JSON into GroundTruth objects
+    - load_predictions deserializes JSON into Prediction objects
+    - serialize_results converts objects to dictionaries
+    - Roundtrip conversion preserves trajectory data (ID, label, points)
+    """
     ground_truths = [
         GroundTruth(
             id="route-1",

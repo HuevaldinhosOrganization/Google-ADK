@@ -7,6 +7,15 @@ from .service import EvaluationService
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    """Parse command-line arguments for the evaluation tool.
+    
+    Args:
+        argv: List of command-line arguments. If None, uses sys.argv.
+    
+    Returns:
+        Parsed command-line arguments with ground_truth, predictions, output,
+        coverage_tolerance, report_type, and input_format attributes.
+    """
     parser = argparse.ArgumentParser(
         description="Evaluate predictions against ground truth trajectories."
     )
@@ -47,6 +56,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Main entry point for the evaluation CLI.
+    
+    Parses arguments, creates an EvaluationService, and evaluates prediction files
+    against ground truth files, writing results to the specified output path.
+    
+    Args:
+        argv: List of command-line arguments. If None, uses sys.argv.
+    
+    Returns:
+        Exit code (0 for success).
+    """
     args = parse_args(argv)
     service = EvaluationService(
         report_type=args.report_type,

@@ -9,12 +9,18 @@ from .models import EvaluationResult, GroundTruth, Prediction, TrajectoryPoint
 
 @dataclass(frozen=True)
 class AdkEvaluationResult(EvaluationResult):
+    """Evaluation result with ADK-specific metrics (precision, recall, F1, ADK score)."""
     precision: float
     recall: float
     f1_score: float
     adk_score: float
 
     def to_dict(self) -> dict:
+        """Convert to dictionary including ADK metrics.
+        
+        Returns:
+            Dictionary with all evaluation and ADK metrics.
+        """
         payload = super().to_dict()
         payload.update(
             {
@@ -28,7 +34,20 @@ class AdkEvaluationResult(EvaluationResult):
 
 
 class AdkTrajectoryEvaluator(TrajectoryEvaluator):
+    """Evaluator that computes ADK-specific metrics including precision, recall, and F1 score."""
     def evaluate(self, truth: GroundTruth, prediction: Prediction) -> AdkEvaluationResult:
+        """Evaluate prediction with ADK metrics (precision, recall, F1, ADK score).
+        
+        Extends base evaluation with precision (coverage), recall (truth coverage),
+        F1 score, and composite ADK score combining path error, F1, and duration.
+        
+        Args:
+            truth: Ground truth trajectory.
+            prediction: Predicted trajectory.
+        
+        Returns:
+            AdkEvaluationResult with all metrics.
+        """
         base = super().evaluate(truth, prediction)
         precision = self._coverage(truth.points, prediction.points)
         recall = self._truth_coverage(truth.points, prediction.points)
@@ -52,6 +71,15 @@ class AdkTrajectoryEvaluator(TrajectoryEvaluator):
         truth_points: tuple[TrajectoryPoint, ...],
         prediction_points: tuple[TrajectoryPoint, ...],
     ) -> float:
+        """Calculate fraction of ground truth points covered by predictions (recall).
+        
+        Args:
+            truth_points: Ground truth trajectory points.
+            prediction_points: Predicted trajectory points.
+        
+        Returns:
+            Recall ratio (0.0 to 1.0).
+        """
         if not truth_points or not prediction_points:
             return 0.0
 
@@ -65,6 +93,15 @@ class AdkTrajectoryEvaluator(TrajectoryEvaluator):
         return covered_truth / len(truth_points)
 
     def _f1(self, precision: float, recall: float) -> float:
+        """Calculate F1 score from precision and recall.
+        
+        Args:
+            precision: Precision metric (0.0 to 1.0).
+            recall: Recall metric (0.0 to 1.0).
+        
+        Returns:
+            F1 score (0.0 to 1.0).
+        """
         if precision + recall == 0.0:
             return 0.0
         return 2.0 * precision * recall / (precision + recall)
@@ -72,6 +109,19 @@ class AdkTrajectoryEvaluator(TrajectoryEvaluator):
     def _adk_score(
         self, path_error: float, f1_score: float, duration_error: Optional[float]
     ) -> float:
+        """Calculate composite ADK score from F1, path error, and duration error.
+        
+        Score = F1 * (1 / (1 + path_error)) * (1 / (1 + |duration_error| / 60))
+        where penalties are applied for path and duration deviations.
+        
+        Args:
+            path_error: Average point distance error.
+            f1_score: F1 score (0.0 to 1.0).
+            duration_error: Absolute duration difference in seconds, or None.
+        
+        Returns:
+            Composite ADK score.
+        """
         if f1_score == 0.0:
             return 0.0
 
