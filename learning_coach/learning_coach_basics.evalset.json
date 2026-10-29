@@ -1,0 +1,127 @@
+{
+  "eval_set_id": "learning_coach_basics",
+  "name": "Learning Coach ADK Basics",
+  "description": "Checks tool use and response quality for introductory ADK concepts.",
+  "eval_cases": [
+    {
+      "eval_id": "explain_tools",
+      "conversation": [
+        {
+          "invocation_id": "learning-coach-tools-001",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Explain what tools are in Google ADK and give me an example."
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "ADK function tools let an agent call Python functions. A study coach can retrieve a trusted concept card with a tool."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_learning_card",
+                "args": {
+                  "topic": "tools"
+                }
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "learning_coach",
+        "user_id": "eval_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "explain_evaluation",
+      "conversation": [
+        {
+          "invocation_id": "learning-coach-evaluation-001",
+          "user_content": {
+            "parts": [
+              {
+                "text": "How does Google ADK evaluation help me test an agent?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "ADK evaluation compares agent conversations with expected responses and tool-use trajectories. An eval case can check that the agent calls the expected tool and gives a suitable answer."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_learning_card",
+                "args": {
+                  "topic": "evaluation"
+                }
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "learning_coach",
+        "user_id": "eval_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "start_quiz",
+      "conversation": [
+        {
+          "invocation_id": "learning-coach-quiz-001",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Start a quiz about ADK tools."
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "What can an ADK function tool let an agent do?"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "start_quiz",
+                "args": {
+                  "topic": "tools"
+                }
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "learning_coach",
+        "user_id": "eval_user",
+        "state": {}
+      }
+    }
+  ]
+}
