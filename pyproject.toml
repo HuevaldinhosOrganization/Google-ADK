@@ -1,31 +1,26 @@
 [build-system]
-requires = ["setuptools>=65.0", "wheel"]
+requires = ["setuptools>=65.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "adk-evaluator"
-version = "0.1.0"
-description = "Base Python project for evaluating ground truth and trajectory solutions."
+name = "google-adk-learning-lab"
+version = "0.2.0"
+description = "A hands-on learning project for building and evaluating agents with Google ADK."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [{name = "Personal ADK Learner"}]
-dependencies = []
-
-[project.scripts]
-adk-evaluator = "adk_evaluator.cli:main"
+dependencies = ["google-adk[eval]>=2.13.0,<3.0.0"]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "black>=24.0", "isort>=5.0", "mypy>=1.8"]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["learning_coach*"]
+exclude = ["tests*"]
 
 [tool.pytest.ini_options]
-minversion = "7.0"
+minversion = "8.0"
 addopts = "--strict-markers"
 testpaths = ["tests"]
-
-[tool.black]
-line-length = 88
-target-version = ["py310"]
-
-[tool.isort]
-profile = "black"

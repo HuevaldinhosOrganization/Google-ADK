@@ -3,8 +3,10 @@ __pycache__/
 .mypy_cache/
 .venv/
 .env
+**/.adk/
 *.py[cod]
 *.sqlite3
 results.json
+/eval/results/
 
 .vscode/
