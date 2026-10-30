@@ -50,6 +50,8 @@
 
 - Local: `python -m venv .venv`; `pip install -e ".[dev]"`; `pytest` (offline); `adk web` (Dev UI); `adk eval ...` (L1). Local SQLite for the review queue. No cloud (CON-01).
 - The model id is pinned in `config.py` (CON-02); no silent fallback (NFR-03). Live runs need `GEMINI_API_KEY` from the environment (SEC-02), never logged.
+- **Free-tier operational envelope.** The Gemini free tier allows **15 `generate_content` requests/minute** for `gemini-3.1-flash-lite`. A single `adk eval` bursts agent + judge calls concurrently and can exceed this (observed in M1); mitigations: keep judge `num_samples` small, run once per clean minute, and split a heavy run (e.g. trajectory-only vs judge) across runs. Evidence runs are therefore small and spaced.
+- **Dev/fixture model tier (Ollama).** For developing and smoke-testing the harness without burning the free tier, agents can run on a **local open-source model via ADK `LiteLlm`** (`ollama_chat/<model>`, Ollama on `localhost:11434`; `pip install litellm`). These runs are `fixture` and are **never** reported as evidence — evidence stays on the pinned Gemini model (CON-02). Validated end-to-end in M1 via the untracked `ollama_lab/` dev agent.
 
 ### 1.6 Entry / exit criteria
 
