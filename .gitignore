@@ -10,3 +10,6 @@ results.json
 /eval/results/
 
 .vscode/
+
+docs/background/TARGET_ROLE.md
+docs/background/INTERVIEW_NOTES.md

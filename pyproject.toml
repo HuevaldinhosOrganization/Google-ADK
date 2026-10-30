@@ -17,10 +17,14 @@ dev = ["pytest>=8.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["learning_coach*"]
+include = ["learning_coach*", "course_assistant*"]
 exclude = ["tests*"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
 addopts = "--strict-markers"
 testpaths = ["tests"]
+markers = [
+    "req(id): tag a test with the requirement id it covers, e.g. req('FR-04')",
+    "live: test needs network / a real model call; excluded from the offline suite (NFR-02)",
+]

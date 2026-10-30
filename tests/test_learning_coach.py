@@ -107,9 +107,11 @@ def test_evaluation_files_match_google_adk_schemas():
     config = EvalConfig.model_validate_json(config_path.read_text(encoding="utf-8"))
 
     assert len(eval_set.eval_cases) == 3
+    # FR-02: the ROUGE-1 `response_match_score` gate (which penalised correct
+    # paraphrases) is replaced by the LLM-judged `final_response_match_v2`.
     assert set(config.criteria) == {
         "tool_trajectory_avg_score",
-        "response_match_score",
+        "final_response_match_v2",
     }
 
     eval_manager = LocalEvalSetsManager(str(PROJECT_ROOT))
