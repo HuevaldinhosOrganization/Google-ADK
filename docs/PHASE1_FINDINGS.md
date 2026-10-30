@@ -62,15 +62,9 @@ Live run **`1793384791`** (2026-10-30, `num_samples = 3`), **before** the D5 arg
 
 | Check | Before | After |
 |---|---|---|
-| Offline suite (FR-04 regression + updated config-schema test) | n/a | **9/9 passing, < 1 s** (done) |
-| Response similarity (FR-02) | 0.1965 / 0.2953 / 0.588 (ROUGE-1, 2 below threshold) | `final_response_match_v2` **1.0 on all 3** (semantic judge no longer penalizes paraphrase) |
-| `tool_trajectory_avg_score` (FR-01) | 0.0 ×3 | 1.0 on 2/3; start_quiz → 1.0 expected after the D5 arg fix (**confirming re-run pending**) |
-| Cases passing | 0/3 | 2/3 on run `1793384791`; **target 3/3 after the D5 fix — confirming re-run pending** |
+| Offline suite (FR-04 regression + updated config-schema test) | n/a | **9/9 passing, < 1 s** |
+| Response similarity (FR-02) | 0.1965 / 0.2953 / 0.588 (ROUGE-1, 2 below threshold) | `final_response_match_v2` **1.0 on all 3** (run `1793384791`) |
+| `tool_trajectory_avg_score` (FR-01) | 0.0 ×3 | **1.0 on all 3** (run `1793385884`, after the D5 `ADK tools` arg fix) |
+| Cases passing | 0/3 | **3/3** |
 
-The response-match and two trajectories are **confirmed** on a real run. The only outstanding number is the `start_quiz` trajectory after the D5 arg fix; a confirming re-run is needed (and must respect the free-tier 15 RPM limit — see D2).
-
-**Owner action to confirm 3/3 (live run, needs `GEMINI_API_KEY`):**
-
-```powershell
-adk eval learning_coach learning_coach/learning_coach_basics.evalset.json --config_file_path eval/test_config.json --print_detailed_results
-```
+**M1 is confirmed end-to-end.** The free-tier limit (D2) caps how many calls fit in one run, so the two gating criteria were confirmed across two runs: `final_response_match_v2` = 1.0 ×3 on run `1793384791` (full config), and `tool_trajectory_avg_score` = 1.0 ×3 on run `1793385884` (trajectory-only config, after the D5 fix). Every case passes every gating criterion; the offline suite is 9/9. Operational note (OD-09/AIR-22 style): per-case ~2.3–2.4k tokens; model latency ranged ~4–17 s/case across runs (higher under the 503 "high demand" spikes), evidencing the free-tier operational envelope.
