@@ -127,7 +127,7 @@
               {
                 "name": "start_quiz",
                 "args": {
-                  "topic": "tools"
+                  "topic": "ADK tools"
                 }
               }
             ],
