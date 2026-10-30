@@ -89,7 +89,14 @@ MAX_QUIZ_ATTEMPTS = 2
 
 
 def normalize_topic(topic: str) -> str:
-    return " ".join(topic.strip().lower().replace("-", " ").split())
+    normalized = " ".join(topic.strip().lower().replace("-", " ").split())
+    # The model commonly phrases a topic as "ADK <topic>" (e.g. "ADK tools").
+    # Drop the course-name qualifier so it resolves to the matching card
+    # instead of being rejected as unsupported (FR-04). A bare "adk" is left
+    # as-is — it is a qualifier, not a topic.
+    if normalized.startswith("adk "):
+        normalized = normalized[len("adk "):]
+    return normalized
 
 
 def get_learning_card(topic: str, tool_context: ToolContext) -> dict[str, Any]:

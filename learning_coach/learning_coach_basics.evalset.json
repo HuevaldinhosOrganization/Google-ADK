@@ -27,6 +27,12 @@
           "intermediate_data": {
             "tool_uses": [
               {
+                "name": "transfer_to_agent",
+                "args": {
+                  "agent_name": "concept_tutor"
+                }
+              },
+              {
                 "name": "get_learning_card",
                 "args": {
                   "topic": "tools"
@@ -67,6 +73,12 @@
           "intermediate_data": {
             "tool_uses": [
               {
+                "name": "transfer_to_agent",
+                "args": {
+                  "agent_name": "concept_tutor"
+                }
+              },
+              {
                 "name": "get_learning_card",
                 "args": {
                   "topic": "evaluation"
@@ -106,6 +118,12 @@
           },
           "intermediate_data": {
             "tool_uses": [
+              {
+                "name": "transfer_to_agent",
+                "args": {
+                  "agent_name": "quiz_coach"
+                }
+              },
               {
                 "name": "start_quiz",
                 "args": {
