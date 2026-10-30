@@ -1,0 +1,27 @@
+# Constants consumed by schema validation (FR-33) and publication_policy (FR-34/35).
+# Changing any value here changes evidence: record it in the report (AIR-22).
+policy_version: 1
+
+publication:
+  confidence_threshold: 0.8        # OD-04: tuned on dev only; post-holdout change = holdout-breaking event
+  pass_mark: 4                     # FR-30: fixed for all demo rubrics
+  borderline_margin: 1             # totals {3,4,5} -> REVIEW
+  review_on_any_flag: true         # FR-34: any non-empty flags list -> REVIEW
+  min_answer_chars: 10             # FR-34a: after strip; shorter -> REVIEW (too_short), no grader call
+
+validation:
+  score_values: [0, 1, 2]          # integers only
+  evidence_quote_min_chars: 3      # FR-33: non-empty, >= 3 chars after strip
+  evidence_quote_match: case_insensitive_substring
+  confidence_range: [0.0, 1.0]     # missing / NaN / out of range -> grader_error
+  require_exact_criterion_ids: true  # FR-30a: none missing, extra or duplicated
+
+grader:
+  allowed_flags: [possible_injection, off_topic, not_english, ambiguous]
+  temperature: 0.0                 # DECISION FOR OWNER: fixed value recorded per report (AIR-22)
+  prompt_ref: grader_v1
+
+reference_labels:
+  passes: [reference_label_a_v1, reference_label_b_v1]
+  temperature: 0.0
+  min_question_self_consistency: 0.70   # SRS 7.1: below this, the whole question is excluded

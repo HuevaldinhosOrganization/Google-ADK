@@ -1,0 +1,15 @@
+# Open questions (data model: OpenQuestion). Not importable by tutor tools (FR-14, SEC-04).
+# The question text lives ONLY here; rubrics reference it by question_id.
+open_questions:
+  - question_id: Q-L3-01
+    lesson: L3
+    prompt: "Explain the difference between a for loop and a while loop in Python, and when you would use each."
+    rubric_ref: Q-L3-01_v1
+  - question_id: Q-L4-01
+    lesson: L4
+    prompt: "Explain why a function sometimes returns None."
+    rubric_ref: Q-L4-01_v1
+  - question_id: Q-L5-01
+    lesson: L5
+    prompt: "Explain why my_list[len(my_list)] causes an error, and how to correctly get the last element of a list."
+    rubric_ref: Q-L5-01_v1

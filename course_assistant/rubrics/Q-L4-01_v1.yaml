@@ -1,0 +1,71 @@
+# Rubric for open question Q-L4-01 (Lesson L4 - Functions).
+# Status lifecycle: draft -> frozen (owner approval). Once frozen and used in a
+# stored report, NEVER edit this file: create Q-L4-01_v2.yaml instead (SRS FR-30).
+# Keywords are regex patterns, matched case-insensitively, used ONLY by
+# keyword_baseline (FR-37). Rule (OD-08): 0 matched -> 0; >=1 but < half -> 1;
+# >= half -> 2. Each criterion has 4 patterns, so 2 matches = score 2.
+
+rubric_id: Q-L4-01
+version: 1
+status: draft
+question_id: Q-L4-01
+lesson: L4
+max_score: 6
+pass_mark: 4            # fixed for every demo rubric (FR-30, OD-03)
+borderline_margin: 1    # totals {3,4,5} -> REVIEW (FR-34)
+
+criteria:
+  - id: cause
+    name: Identifies the cause
+    descriptors:
+      2: >-
+        States that the function returns None because it finishes without
+        executing a return statement (no return at all, a code path that never
+        reaches a return, or a bare `return` / `return None`).
+      1: >-
+        Points in the right direction but is imprecise or incomplete, OR states
+        the correct cause together with a false condition (for example, "only
+        when the function uses print").
+      0: >-
+        Cause absent or wrong (syntax errors, wrong number of arguments, memory,
+        infinite loops, etc.).
+    keywords:
+      - '\b(no|without|missing|lacks?|forg[eo]t\w*)\b.{0,20}\breturn\b'
+      - '\bdefault\b'
+      - '\bimplicit(ly)?\b'
+      - '\b(end of (the |its )?(function|block|code)|reach(es|ed)? the end|finish(es|ed)?)\b'
+
+  - id: consequence
+    name: Explains the consequence
+    descriptors:
+      2: >-
+        Explains that the caller receives None, so printing, storing in a
+        variable, or using the result shows None (or fails, e.g. in arithmetic)
+        instead of the expected value.
+      1: >-
+        Mentions an effect but vaguely, OR misnames the value the caller gets
+        (calls it "null", "nothing", 0, or an empty string instead of None).
+      0: Consequence absent or wrong.
+    keywords:
+      - '\bprint(s|ed|ing)?\b'
+      - '\b(variable|assign(s|ed|ing)?|stor(e|es|ed|ing)|sav(e|es|ed|ing))\b'
+      - '\b(instead of|expected?|actual (value|result|calculation))\b'
+      - '\b(math|breaks?|error|fails?)\b'
+
+  - id: fix
+    name: Gives the fix
+    descriptors:
+      2: >-
+        Says to add a `return` statement that sends the desired value back
+        (stated in words or shown in a code example).
+      1: >-
+        Mentions `return` as the fix but without saying what to return, or only
+        implies it.
+      0: >-
+        No fix, a vague fix ("fix the function so it works"), or a wrong fix
+        (for example, "use print").
+    keywords:
+      - '\b(add|put|write|use|include)\w*\s+(a\s+|the\s+)?return\b'
+      - '\breturn\s+(the\s+|your\s+)?(value|result|variable|data|answer|output|[a-z]+_[a-z_]+|[a-z]\s*[-+*/])'
+      - '\bdef\s+\w+\s*\('
+      - '\b(send|give|pass)\w*\b.{0,25}\bback\b'
