@@ -1,0 +1,63 @@
+# Rubric for open question Q-L3-01 (Lesson L3 - Loops).
+# Same lifecycle and keyword rules as Q-L4-01_v1.yaml (FR-30, FR-37, OD-08).
+
+rubric_id: Q-L3-01
+version: 1
+status: draft
+question_id: Q-L3-01
+lesson: L3
+max_score: 6
+pass_mark: 4
+borderline_margin: 1
+
+criteria:
+  - id: for_loop
+    name: Describes the for loop
+    descriptors:
+      2: >-
+        States that a for loop runs once for each item of a sequence/iterable
+        (list, string, range), so the number of iterations is set by the data.
+      1: >-
+        Says a for loop repeats code a fixed number of times or "over things"
+        without saying it iterates over the items of a sequence/range, OR mixes a
+        correct description with a false claim.
+      0: Absent or wrong.
+    keywords:
+      - '\bfor\b.{0,40}\b(each|every)\b'
+      - '\b(list|sequence|iterable|items?|elements?|string)\b'
+      - '\brange\b'
+      - '\b(known|fixed|set|specific|certain) (number|amount|count)\b'
+
+  - id: while_loop
+    name: Describes the while loop
+    descriptors:
+      2: >-
+        States that a while loop repeats as long as its condition is true
+        (checked before each iteration), and that the condition must eventually
+        become false or the loop never ends.
+      1: >-
+        Mentions that a while loop depends on a condition but omits that it must
+        become false, OR states the condition logic backwards ("until it is
+        true") alongside an otherwise correct idea.
+      0: Absent or wrong.
+    keywords:
+      - '\bwhile\b.{0,40}\bcondition\b'
+      - '\b(as long as|until)\b'
+      - '\btrue\b'
+      - '\b(infinite|forever|never (ends|stops))\b'
+
+  - id: when_to_use
+    name: Explains when to use each
+    descriptors:
+      2: >-
+        Gives a correct choice rule for both: for when iterating a known
+        collection or count; while when the number of repetitions depends on a
+        condition not known in advance (e.g. retry until valid input). An example
+        is welcome but not required.
+      1: Gives a correct rule for only one of the two loops, or a vague rule.
+      0: No choice rule, or a wrong one.
+    keywords:
+      - '\buse\s+(a\s+)?(for|while)\b|\b(for|while)\s+(loop\s+)?(is\s+)?(better|best|when)\b'
+      - '\b(don.?t|do not) know\b|\bunknown\b|\bin advance\b'
+      - '\b(example|for instance|e\.g\.)\b'
+      - '\b(input|password|user)\b'

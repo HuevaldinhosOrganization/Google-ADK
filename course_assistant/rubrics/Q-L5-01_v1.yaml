@@ -1,0 +1,60 @@
+# Rubric for open question Q-L5-01 (Lesson L5 - Lists).
+# Same lifecycle and keyword rules as Q-L4-01_v1.yaml (FR-30, FR-37, OD-08).
+# Content dependency: lesson L5 must cover zero-based indexing, negative indexes
+# and that an out-of-range index raises IndexError, or this question is not
+# answerable from L5 alone (FR-10a).
+
+rubric_id: Q-L5-01
+version: 1
+status: draft
+question_id: Q-L5-01
+lesson: L5
+max_score: 6
+pass_mark: 4
+borderline_margin: 1
+
+criteria:
+  - id: zero_based
+    name: Explains zero-based indexing
+    descriptors:
+      2: >-
+        States that indexes start at 0, so a list with n items has valid indexes
+        0 to n-1 (the last valid index is len(my_list) - 1).
+      1: >-
+        Mentions that indexing starts at 0 but does not connect it to the last
+        valid index (or the reverse).
+      0: Absent or wrong.
+    keywords:
+      - '\b(start|begin)s?\s+(at|from)\s+(0|zero)\b'
+      - '\b(0|zero)[- ]based\b|\bindex(ing)?\s+(0|zero)\b'
+      - '\blen\w*\s*-\s*1\b|\bminus one\b|\bn\s*-\s*1\b'
+      - '\bfirst (element|item)\b'
+
+  - id: error
+    name: Explains the error
+    descriptors:
+      2: >-
+        Explains that len(my_list) is one past the last valid index, so the
+        access raises IndexError (index out of range).
+      1: >-
+        Says the index is out of range or "does not exist" without explaining
+        why, OR names the wrong exception type.
+      0: Absent or wrong.
+    keywords:
+      - '\bindexerror\b'
+      - '\bout of (range|bounds)\b'
+      - '\b(doesn.?t|does not|no) exist\b'
+      - '\b(one|1) (past|beyond|more than|after|too (many|far|big))\b'
+
+  - id: fix
+    name: Gives the correct way to get the last element
+    descriptors:
+      2: Gives my_list[-1] or my_list[len(my_list) - 1], correctly.
+      1: >-
+        Right idea stated imprecisely (e.g. "subtract one" without saying where).
+      0: No fix, or a wrong one (e.g. my_list[len(my_list)]).
+    keywords:
+      - '\[\s*-\s*1\s*\]'
+      - '\blen\s*\(\s*\w+\s*\)\s*-\s*1\b'
+      - '\bnegative\s+ind(ex|ices|exes)\b'
+      - '\blast (element|item)\b'
